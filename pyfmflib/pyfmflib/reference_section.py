@@ -36,15 +36,15 @@ class Reference_section(object):
             self,
             title,
             creator,
-            created,
             place,
+            created,
             contact
     ):
 
         self.title = title
         self.creator = creator
-        self.created = created
         self.place = place
+        self.created = created
         self.contact = contact
 
 
