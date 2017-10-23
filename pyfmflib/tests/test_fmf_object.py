@@ -38,7 +38,8 @@ import unittest
 
 import sys
 print sys.path
-from pyfmflib.pyfmflib.fmf import FMF
+from pyfmflib.pyfmflib.fmf import FMF, UndefinedObject, AmbiguousObject, \
+    ForbiddenSubmission, MultipleKey, MissingSubmission, SpecificationViolation
 from pyfmflib.pyfmflib.table import FMFTable
 
 class Test_Fmf:
@@ -47,6 +48,8 @@ class Test_Fmf:
         self.fmf_object = FMF()
 
     # strict API example
+
+    '''Tests for initialize'''
     def test_initialize_empty(self):
             fmf0 = FMF()
             fmf = fmf0.initialize()
@@ -96,6 +99,7 @@ class Test_Fmf:
 #                                   'aldebaran, universe', '1970-01-01', \
 #                                   'tux@example.com']
 
+    '''Tests for set_reference'''
     def test_set_reference(self):
             fmf = FMF()
             fmf.set_reference('test title', 'me', \
@@ -151,16 +155,16 @@ class Test_Fmf:
  #                                  'earth, universe', '1970-01-01', \
  #                                  'bla@example.com']
 
+    '''Tests for add_meta_section'''
     def test_add_meta_section(self):
 
-        fmf = FMF()
-        fmf.add_meta_section('Meta Section Name')
+#        fmf = FMF()
+        self.fmf_object.add_meta_section('Meta Section Name')
 
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
-        assert fmf.meta_sections is not None
-        assert len(fmf.meta_sections) == 1
-        meta_section = fmf.meta_sections[0]
+        assert isinstance(self.fmf_object, FMF)
+        assert self.fmf_object.meta_sections is not None
+        assert len(self.fmf_object.meta_sections) == 1
+        meta_section = self.fmf_object.meta_sections[0]
 
         assert meta_section.name == 'Meta Section Name'
 
@@ -168,70 +172,256 @@ class Test_Fmf:
 #        self.fmf_object.meta_sections.append(meta_section)
 
     def test_add_meta_section_invalid_name(self):
-        fmf = FMF()
-        fmf.add_meta_section('*Meta Section Name')
+#        fmf = FMF()
+#        fmf.add_meta_section('*Meta Section Name')
 
-        meta_section = fmf.meta_sections[0]
-        print meta_section.name
+#        meta_section = fmf.meta_sections[0]
+#        print meta_section.name
 
-        assert fmf is not None
-        assert len(fmf.meta_sections) != 1
+#        assert fmf is not None
+#        assert len(fmf.meta_sections) != 1
+
+        with pytest.raises(Exception) as context:
+            self.fmf_object.add_meta_section('*Meta Section Name')
+
+#        self.assertTrue('This is broken' in context.exception)
+
+#        self.assertRaises(Exception, fmf.add_meta_section, name)
 
     def test_add_meta_section_existing_name(self):
-        fmf = FMF()
-        fmf.add_meta_section('Meta Section Name')
+        self.fmf_object.add_meta_section('Meta Section Name')
 
-        fmf.add_meta_section('Meta Section Name')
+#        fmf.add_meta_section('Meta Section Name')
 
-        assert fmf is not None
-        assert len(fmf.meta_sections) != 2
+        assert len(self.fmf_object.meta_sections) != 2
 
+        with pytest.raises(MultipleKey) as context:
+            self.fmf_object.add_meta_section('Meta Section Name')
+
+    def test_add_meta_section_no_parameter(self):
+
+#        fmf.add_meta_section()
+
+        with pytest.raises(TypeError) as context:
+            self.fmf_object.add_meta_section()
+
+    '''Tests for get_meta_section'''
     def test_get_meta_section_by_name(self):
-        fmf = FMF()
-        meta_section = fmf.add_meta_section('Meta Section Name')
+        meta_section = self.fmf_object.add_meta_section('Meta Section Name')
 
-        meta_section_returned = fmf.get_meta_section('Meta Section Name')
+        meta_section_returned = self.fmf_object.get_meta_section('Meta Section Name')
 
-        assert fmf is not None
         assert meta_section_returned is not None
         assert meta_section_returned == meta_section
 
     def test_get_meta_section_by_invalid_name(self):
-        fmf = FMF()
-        meta_section = fmf.add_meta_section('Meta Section Name')
+        meta_section = self.fmf_object.add_meta_section('Meta Section Name')
 
-        meta_section_returned = fmf.get_meta_section('Invalid Meta Section Name')
+        meta_section_returned = self.fmf_object.get_meta_section('Invalid Meta Section Name')
 
-        assert fmf is not None
         assert meta_section is not None
         assert meta_section_returned != meta_section
 
     def test_get_meta_section_iteratively(self):
-        fmf = FMF()
-        meta_section = fmf.add_meta_section('Meta Section Name')
+        meta_section = self.fmf_object.add_meta_section('Meta Section Name')
 
-        meta_section_returned = fmf.get_meta_section(None)
+        meta_section_returned = self.fmf_object.get_meta_section(None)
 
-        assert fmf is not None
         assert meta_section is not None
         assert meta_section_returned is not None
         assert meta_section_returned == meta_section
 
     def test_get_meta_section_mixed_calls(self):
-        fmf = FMF()
-        meta_section1 = fmf.add_meta_section('Meta Section Name')
+        meta_section1 = self.fmf_object.add_meta_section('Meta Section Name')
 
-        meta_section2 = fmf.add_meta_section('Meta Section Name 2')
+        meta_section2 = self.fmf_object.add_meta_section('Meta Section Name 2')
 
-        meta_section_returned = fmf.get_meta_section('Meta Section Name')
+        meta_section_returned1 = self.fmf_object.get_meta_section('Meta Section Name')
 
-        assert fmf is not None
         assert meta_section1 is not None
-        assert meta_section_returned == meta_section1
+        assert meta_section_returned1 == meta_section1
 
-        meta_section_returned2 = fmf.get_meta_section(None)
+ #       meta_section_returned2 = fmf.get_meta_section(None)
 
-        assert meta_section_returned2 != meta_section2
+ #       assert meta_section_returned2 is None
+ #       assert meta_section_returned2 != meta_section2
+
+        with pytest.raises(UndefinedObject) as context:
+            self.fmf_object.get_meta_section(None)
+
+    '''Tests for add_table'''
+    # Add a table with name and symbol
+    def test_add_table_by_name_symbol(self):
+        self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table = self.fmf_object.table_sections[0]
+
+        assert table.name == 'Table Name'
+        assert table.symbol == 'Table Symbol'
+
+    # Adding a table with already existing name and symbol
+    # should give exception
+    def test_add_table_existing_name_symbol(self):
+        self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table = self.fmf_object.table_sections[0]
+
+        assert table.name == 'Table Name'
+        assert table.symbol == 'Table Symbol'
+
+        with pytest.raises(MultipleKey) as context:
+            self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+    # Add a table without name and symbol
+    def test_add_table_without_name_symbol(self):
+        self.fmf_object.add_table(None, None)
+
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table = self.fmf_object.table_sections[0]
+
+        assert table.name is None
+        assert table.symbol is None
+
+    # After adding table with name and symbol, adding second table without
+    # both should give exception
+    def test_add_table_missing_submission(self):
+        self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        with pytest.raises(MissingSubmission) as context:
+            self.fmf_object.add_table(None, None)
+
+    # Adding second table without name and symbol should give exception
+    def test_add_table_specification_violation(self):
+        self.fmf_object.add_table(None, None)
+
+        with pytest.raises(MissingSubmission) as context:
+            self.fmf_object.add_table(None, None)
+
+    '''Tests for get_table'''
+    def test_get_table_by_symbol(self):
+        table_added = self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        assert table_added is not None
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table_returned = self.fmf_object.get_table('Table Symbol')
+        assert table_returned is not None
+        assert table_returned == table_added
+
+    def test_get_table_by_invalid_symbol(self):
+        table_added = self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        assert table_added is not None
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table_returned = self.fmf_object.get_table('Invalid Table Symbol')
+
+        assert table_returned != table_added
+
+    # Initially table was added with name and symbol
+    def test_get_table_iteratively_symbol(self):
+        table_added = self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        assert table_added is not None
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table_returned = self.fmf_object.get_table(None)
+
+        assert table_returned is not None
+        assert table_returned == table_added
+
+        with pytest.raises(UndefinedObject) as context:
+            self.fmf_object.get_table(None)
+
+    # Initially table was added without name and symbol
+    def test_get_table_iteratively_without_symbol(self):
+        table_added = self.fmf_object.add_table(None, None)
+
+        assert table_added is not None
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 1
+
+        table_returned = self.fmf_object.get_table(None)
+
+        assert table_returned is not None
+        assert table_returned == table_added
+
+        with pytest.raises(UndefinedObject) as context:
+            self.fmf_object.get_table(None)
+
+    # Add 2 tables, get table by symbol first and then iteratively; error raised
+    def test_get_table_mixed_calls(self):
+        table_added = self.fmf_object.add_table('Table Name', 'Table Symbol')
+
+        table_added_2 = self.fmf_object.add_table('Table Name 2', 'Table Symbol 2')
+
+        assert table_added is not None
+        assert table_added_2 is not None
+        assert self.fmf_object.table_sections is not None
+        assert len(self.fmf_object.table_sections) == 2
+
+        table_returned = self.fmf_object.get_table(None)
+
+        assert table_returned is not None
+        assert table_returned == table_added
+
+        with pytest.raises(UndefinedObject) as context:
+            self.fmf_object.get_table(None)
+
+    '''Tests for set_header'''
+    # Set header with encoding, comment_char and separator
+    def test_set_header(self):
+        header = self.fmf_object.set_header('utf-9', ',', '\n', None)
+
+        assert header is not None
+        assert self.fmf_object.header is not None
+
+        assert header.encoding == 'utf-9'
+        assert header.comment_char == ','
+        assert header.separator == '\n'
+        assert header.misc_params is None
+
+    # Set header with encoding, comment_char,separator and misc_params key value pairs
+    def test_set_header_full(self):
+        misc_params = {'fmf_version': 1.0, 'space_char': '\s'}
+        header = self.fmf_object.set_header('utf-9', ',', '\n', misc_params)
+
+        assert header is not None
+        assert self.fmf_object.header is not None
+
+        assert header.encoding == 'utf-9'
+        assert header.comment_char == ','
+        assert header.separator == '\n'
+
+        assert header.misc_params['fmf_version'] == 1.0
+        assert header.misc_params['space_char'] == '\s'
+
+    # Set header with default arguments
+    def test_set_header_default_arguments(self):
+        header = self.fmf_object.set_header(None, None, None, None)
+
+        assert header is not None
+        assert self.fmf_object.header is not None
+
+        assert header.encoding == 'utf-8'
+        assert header.comment_char == ';'
+        assert header.separator == '\t'
+        assert header.misc_params is None
+
+    def test_get_header(self):
+        header = self.fmf_object.get_header()
+        assert header is not None
 
     '''
     def test_get_table_iteratively(self):
@@ -259,11 +449,12 @@ class Test_Fmf:
             fmf.tables = [table1, table2]
             fmftable = fmf.get_table('tab1')
             assert fmftable == table1
-            with pytest.raises(AmbigousObject) as e_info:
+            with pytest.raises(AmbiguousObject) as e_info:
                 fmf.get_table()
 
     # strict API example
     '''
+
 
     '''
     def test_empty_fmf(self):
