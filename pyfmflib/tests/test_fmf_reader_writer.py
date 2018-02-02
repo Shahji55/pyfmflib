@@ -261,4 +261,3 @@ class TestFmfWriterReader(object):
         output.write(self.fmf_object)
 
         assert stream.getvalue().strip() == output.getvalue().strip()
-
