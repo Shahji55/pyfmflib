@@ -94,6 +94,30 @@ def count_calls1(function):
     func_wrapper.__name__ = function.__name__
     return func_wrapper
 
+class MissingSubmission(Exception):
+    # At least one mandatory keyword or parameter not submitted.
+    pass
+
+class ForbiddenSubmission(Exception):
+    # Submitted keyword or parameter contains forbidden character(s).
+    pass
+
+class MultipleKey(Exception):
+    # Submitted key does already exists.
+    pass
+
+class UndefinedObject(Exception):
+    # Object could not be retrieved.
+    pass
+
+class AmbiguousObject(Exception):
+    # Object not properly specified.
+    pass
+
+class SpecificationViolation(Exception):
+    # Object does not comply with compliance level or version specifications.
+    pass
+
 class FMF:
     def __init__(self):
 
@@ -159,19 +183,17 @@ class FMF:
 
         return self.reference_section
 
-    def add_table(self, name, symbol):
+#    def add_table(self, name, symbol):
+#
+#        table = FMFTable(name, symbol)
+#
+#        return table
 
-        table = FMFTable(name, symbol)
-
-        return table
-
-    '''
     def add_meta_section(self, name):
-
-        if name is not None:
+        if name:
 
             if name.find("*") != -1:
-                raise Exception(" '*' is not allowed as first character")
+                raise ForbiddenSubmission(" '*' is not allowed as first character")
 
             for item in self.meta_sections:
                 if item.name == name:
@@ -180,7 +202,6 @@ class FMF:
             meta_section = Meta_section(name)
             self.meta_sections.append(meta_section)
             return meta_section
-    '''
 
     def get_meta_section(self, name):
         if self.meta_sections is not None:
@@ -322,3 +343,24 @@ class FMF:
         if item is not None:
             index = None
             return index
+
+    def set_header(self, encoding, comment_char, separator, misc_params):
+        pass
+
+    def verify(self):
+
+        # Code commented out due to table functionality not implemented
+        '''
+        for table in self.table_sections:
+            result = table.verify()
+
+            if not result:
+                break
+
+        for meta_section in self.meta_sections:
+            result = meta_section.verify()
+
+            if not result:
+                break
+        '''
+
