@@ -1,0 +1,36 @@
+; -*- fmf-version: 1.0 -*-
+;comment after header section
+[*reference]
+creator: Andreas W. Liehr and Andreas J. Holtmann
+created: 1995-01-10
+title: Measurement of Faradays constant
+place: Physikalisches Institut, Universitaet Muenster
+contact: andreas@uni-muenster.com
+[measurement]
+room temperature: T = (292 \pm 1) K
+barometric pressure: p = 1.0144 bar \pm 10 mbar
+current: I = (171 \pm 1) mA	
+[analysis]
+estimation method: line of best fit
+[*table definitions]
+analysis: A
+primary: P
+[*data definitions: A]
+gas: G
+number of electrons: N_e
+volume per time interval: V' \pm \Delta_{V'} [cm^3/min]
+uncertainty of ratio: \Delta_{V'} [cm^3/min]
+Faraday constant: Fa \pm \Delta_{Fa} [C/mol]
+error of Faraday constant: \Delta_{Fa} [C/mol]
+[*data: A]
+;G	N_e	V'	\Delta_{V'} Fa		\Delta_{Fa}
+H_2	2	1.256	0.065	    91400	5500
+O_2	4	0.562	0.04	    102200	7800
+[*data definitions: P]
+time: t [min] \pm 5 [s]
+hydrogen volume: V_{H_2}(t) \pm 0.2 [cm^3]
+oxygen volume: V_{O_2}(t) \pm 0.2 [cm^3]
+[*data: P]
+2.5	2.0	2.1
+4	4.0	2.4
+6	6.6	3.7
