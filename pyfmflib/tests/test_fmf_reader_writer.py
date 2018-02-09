@@ -31,6 +31,7 @@
 
 from pyfmflib.pyfmflib.fmf import FMF, MissingSubmission
 import pytest
+import os.path
 
 # pylint: disable=bare-except
 try:
@@ -45,61 +46,41 @@ class TestFmfWriterReader(object):
     read and write methods"""
     def setup(self):
         """Populate the whole FMF object"""
-
         # pylint: disable=attribute-defined-outside-init
         self.fmf_object = FMF()
         # pylint: enable=attribute-defined-outside-init
-
         misc_params = {'fmf_version': 1.0}
         self.fmf_object.set_header(None, None, None, misc_params)
-
         self.fmf_object.add_comment("comment after header section")
-
         self.fmf_object.set_reference(
             'Measurement of Faradays constant',
             'Andreas W. Liehr and Andreas J. Holtmann',
             'Physikalisches Institut, Universitaet Muenster',
             '1995-01-10',
             'andreas@uni-muenster.com')
-
         meta_section1 = self.fmf_object.add_meta_section('measurement')
-#        measurements = {'room temperature', 'T = (292 \pm 1) K',
-#            'barometric pressure': 'p = 1.0144 bar \pm 10 mbar',
-#            'current': 'I = (171 \pm 1) mA'}
-
         meta_section1.add_entry('room temperature', r'T = (292 \pm 1) K')
         meta_section1.add_entry('barometric pressure',
                                 r'p = 1.0144 bar \pm 10 mbar')
         meta_section1.add_entry('current', r'I = (171 \pm 1) mA')
-
         meta_section_2 = self.fmf_object.add_meta_section('Analysis')
-
-#        analysis = {'estimation method': 'line of best fit'}
-
         meta_section_2.add_entry('estimation method', 'line of best fit')
-
         table1 = self.fmf_object.add_table('analysis', 'A')
-
         table1.add_column('Gas', 'G', '%s')
         table1.add_column('number of electrons', 'N_e', '%d')
         table1.add_column('volume per time interval', 'V', '%5.3f')
         table1.add_column('uncertainty of ratio', r"\Delta_{V'}", '%.3f')
         table1.add_column('Faraday constant', 'Fa', '%d')
         table1.add_column('error of Faraday constant', r'\Delta_{Fa}', '%d')
-
         table1.add_comment(r"G\tN_e\tV'\t\Delta_{V'} Fa\t\Delta_{Fa}")
-
         table1.add_data_row(['H_2', '2', '1.256', '0.065', '91400', '5500'])
         table1.add_data_row(['O_2', '4', '0.562', '0.04', '102200', '7800'])
-
         table2 = self.fmf_object.add_table('primary', 'P')
-
         table2.add_column('time', r't [min] \pm 5 [s]', '%.1f')
         table2.add_column('hydrogen volume', r'V_{H_2}(t) \pm 0.2 [cm^3]',
                           '%.1f')
         table2.add_column('oxygen volume', r'V_{O_2}(t) \pm 0.2 [cm^3]',
                           '%.1f')
-
         table2.add_data_column(['2.5', '4', '6'])
         table2.add_data_column(['2.0', '4.0', '6.6'])
         table2.add_data_column(['2.1', '2.4', '3.7'])
@@ -107,26 +88,17 @@ class TestFmfWriterReader(object):
     def test_fmf_writer(self):
         """Test fmf write method"""
         output = StringIO()
-
         # Write the fmf object to memory
         output.write(self.fmf_object)
-
         self.fmf_object.write(output)
-
         # Location of fmf file
-        fmf_file = "/home/shahzeb/sample_fmf_file"
-
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
         # Read from file and write to stream
         stream = StringIO()
         stream.write(open(fmf_file).read())
-
-#        stream.write(open(fmf_file).readline())
-
         stream = StringIO()
         stream.write(open(fmf_file).read())
-        print stream
-        print stream.getvalue().strip()
-
         assert output.getvalue().strip() == stream.getvalue().strip()
 
     def test_fmf_writer_no_argument(self):
@@ -145,119 +117,104 @@ class TestFmfWriterReader(object):
 
     def test_fmf_reader_metasec_entries(self):
         """Test meta section entries (key and values)"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         assert len(self.fmf_object.meta_sections) == len(
             fmf_object_return.meta_sections)
-
         if len(self.fmf_object.meta_sections) == len(
                 fmf_object_return.meta_sections):
-            # for key in self.fmf_object.meta_sections.entries.keys():
-                # if key not in fmf_object_return.meta_sections.entries.keys():
-                    # raise Exception("Meta section keys do not match")
-
             for key, val in self.fmf_object.meta_sections.entries.items():
                 if key not in fmf_object_return.meta_sections.entries.keys():
                     raise Exception("Meta section keys do not match")
-
                 if fmf_object_return.meta_sections.entries.get(key, None) \
                         != val:
                     raise Exception("Meta section values do not match")
 
     def test_fmf_reader_tablesec_entr(self):
         """Test number of table section entries"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         assert len(self.fmf_object.table_sections) == len(
             fmf_object_return.table_sections)
 
     def test_fmf_reader_data_def_entr(self):
         """Test data definition entries (keys and values)"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         for key, val in self.fmf_object.table_sections.data_definitions.\
                 items():
             if key not in fmf_object_return.table_sections.data_definitions.\
                     keys():
                 raise Exception("Data definition keys do not match")
-
             if fmf_object_return.table_sections.data_definitions.\
                     get(key, None) != val:
                 raise Exception("Data definition values do not match")
 
     def test_fmf_reader_table_def_entr(self):
         """Test table definition entries (keys and values)"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         for key, val in self.fmf_object.table_sections.table_definitions.\
                 items():
             if key not in fmf_object_return.table_sections.table_definitions.\
                     keys():
                 raise Exception("Table definition keys do not match")
-
             if fmf_object_return.table_sections.table_definitions.get(
                     key, None) != val:
                 raise Exception("Table definition values do not match")
 
     def test_fmf_reader_table_data(self):
         """Test content of table data"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         assert self.fmf_object.table_sections.data == fmf_object_return.\
             table_sections.data
 
     def test_fmf_reader_global_comments(self):
         """Test content of global comments"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         assert self.fmf_object.global_comments == fmf_object_return.\
             global_comments
 
     def test_fmf_reader_table_comments(self):
         """Test content of table comments"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         assert self.fmf_object.table_sections.comments == fmf_object_return.\
             table_sections.comments
 
     def test_fmf_read_and_write(self):
         """Compare output of read and write"""
-        fmf_file_pointer = open("/home/shahzeb/sample_fmf_file", "r")
-
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
-
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
-
         assert fmf_object_return is not None
-
         stream = StringIO()
-
-#        stream.write(fmf_object_return)
         stream.write(fmf_file_pointer.read())
-
         output = StringIO()
-
         output.write(self.fmf_object)
-
         assert stream.getvalue().strip() == output.getvalue().strip()
