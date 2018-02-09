@@ -33,7 +33,7 @@ from pyfmflib.tests.fmf_test_base import FmfTestBase
 
 
 class TestFmfReferenceSection(FmfTestBase):
-    """Class containing the tests for FMF meta section"""
+    """Class containing the tests for FMF reference section"""
     def setup(self):
         """Setup the empty fmf object"""
         super(TestFmfReferenceSection, self).__init__()
