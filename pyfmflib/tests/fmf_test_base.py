@@ -35,7 +35,7 @@ import numpy
 import pytest
 
 
-class TestFmf(object):
+class FmfTestBase(object):
     """Class containing the setup and the tests for methods of FMF object"""
     def setup(self):
         """Set up an empty FMF object"""

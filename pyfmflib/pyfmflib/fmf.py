@@ -37,7 +37,7 @@ from pyfmflib.pyfmflib.table import FMFTable
 def count_calls(function):
     def func_wrapper(*args, **kwargs):
 
-            print("Args are: " , args)
+            print("Args are: ", args)
             print("kwargs are: ", kwargs)
 
             print(args[1])
@@ -94,29 +94,31 @@ def count_calls1(function):
     func_wrapper.__name__ = function.__name__
     return func_wrapper
 
+
 class MissingSubmission(Exception):
-    # At least one mandatory keyword or parameter not submitted.
+    """At least one mandatory keyword or parameter not submitted"""
     pass
 
 class ForbiddenSubmission(Exception):
-    # Submitted keyword or parameter contains forbidden character(s).
+    """Submitted keyword or parameter contains forbidden character(s)"""
     pass
 
 class MultipleKey(Exception):
-    # Submitted key does already exists.
+    """Submitted key does already exists"""
     pass
 
 class UndefinedObject(Exception):
-    # Object could not be retrieved.
+    """Object could not be retrieved"""
     pass
 
 class AmbiguousObject(Exception):
-    # Object not properly specified.
+    """Object not properly specified"""
     pass
 
 class SpecificationViolation(Exception):
-    # Object does not comply with compliance level or version specifications.
+    """Object does not comply with compliance level or version specifications"""
     pass
+
 
 class FMF:
     def __init__(self):
