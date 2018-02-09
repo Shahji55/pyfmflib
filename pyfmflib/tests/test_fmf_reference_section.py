@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""This is the test base class for FMF"""
+"""This is the test class for FMF reference section"""
 # Copyright (c) 2014 - 2017, Rectorate of the University of Freiburg
 # All rights reserved.
 #
@@ -29,50 +29,51 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from pyfmflib.pyfmflib.fmf import FMF
+from pyfmflib.tests.fmf_test_base import FmfTestBase
 
-class FmfTestBase(object):
-    """Class containing the setup and the tests for methods of FMF object"""
-    def __int__(self):
-        """Set up an empty FMF object"""
-        # pylint: disable=attribute-defined-outside-init
-        self.fmf_object = FMF()
-        # pylint: enable=attribute-defined-outside-init
 
-#   Tests for initialize
-    def test_initialize_empty(self):
-        """Initialize empty FMF object"""
-        fmf = self.fmf_object.initialize()
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
+class TestFmfReferenceSection(FmfTestBase):
+    """Class containing the tests for FMF meta section"""
+    def setup(self):
+        """Setup the empty fmf object"""
+        super(TestFmfReferenceSection, self).__init__()
 
-    def test_initialize_reference(self):
-        """Initialize with mandatory parameters only"""
-        fmf = self.fmf_object.initialize('test title', 'me',
-                                         'aldebaran, universe',
-                                         '1970-01-01')
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
-        assert len(fmf.meta_sections) == 1
-        ref = fmf.meta_sections[0]
+#   Tests for set_reference
+    def test_set_reference(self):
+        """Set reference section with mandatory parameters"""
+        self.fmf_object.set_reference('test title', 'me',
+                                      'aldebaran, universe',
+                                      '1970-01-01', None)
+        assert self.fmf_object.meta_sections is not None
+        assert len(self.fmf_object.meta_sections) == 1
+        ref = self.fmf_object.meta_sections[0]
         assert ref.title == 'test title'
         assert ref.creator == 'me'
         assert ref.place == 'aldebaran, universe'
         assert ref.created == '1970-01-01'
 
-    def test_initialize_reference_full(self):
-        """Initialize with all parameters"""
-        fmf = self.fmf_object.initialize('test title', 'me',
-                                         'aldebaran, universe',
-                                         '1970-01-01',
-                                         'tux@example.com')
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
-        assert len(fmf.meta_sections) == 1
-        ref = fmf.meta_sections[0]
+    def test_set_reference_full(self):
+        """Set reference section with all parameters"""
+        self.fmf_object.set_reference('test title', 'me',
+                                      'aldebaran, universe',
+                                      '1970-01-01',
+                                      'tux@example.com')
+        assert self.fmf_object.meta_sections is not None
+        assert len(self.fmf_object.meta_sections) == 1
+        ref = self.fmf_object.meta_sections[0]
         assert ref.title == 'test title'
         assert ref.creator == 'me'
         assert ref.place == 'aldebaran, universe'
         assert ref.created == '1970-01-01'
         assert ref.contact == 'tux@example.com'
-
+        self.fmf_object.set_reference('test title 2', 'me',
+                                      'earth, universe',
+                                      '1970-01-01',
+                                      'bla@example.com')
+        assert len(self.fmf_object.meta_sections) == 1
+        ref = self.fmf_object.meta_sections[0]
+        assert ref.title == 'test title 2'
+        assert ref.creator == 'me'
+        assert ref.place == 'earth, universe'
+        assert ref.created == '1970-01-01'
+        assert ref.contact == 'bla@example.com'
