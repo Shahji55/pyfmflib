@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """This is the test base class for FMF"""
-# Copyright (c) 2014 - 2017, Rectorate of the University of Freiburg
+# Copyright (c) 2014 - 2018, Rectorate of the University of Freiburg
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,8 @@
 
 from pyfmflib.pyfmflib.fmf import FMF
 
+
+# pylint: disable=too-few-public-methods
 class FmfTestBase(object):
     """Class containing the setup and the tests for methods of FMF object"""
     def __int__(self):
@@ -38,41 +40,3 @@ class FmfTestBase(object):
         # pylint: disable=attribute-defined-outside-init
         self.fmf_object = FMF()
         # pylint: enable=attribute-defined-outside-init
-
-#   Tests for initialize
-    def test_initialize_empty(self):
-        """Initialize empty FMF object"""
-        fmf = self.fmf_object.initialize()
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
-
-    def test_initialize_reference(self):
-        """Initialize with mandatory parameters only"""
-        fmf = self.fmf_object.initialize('test title', 'me',
-                                         'aldebaran, universe',
-                                         '1970-01-01')
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
-        assert len(fmf.meta_sections) == 1
-        ref = fmf.meta_sections[0]
-        assert ref.title == 'test title'
-        assert ref.creator == 'me'
-        assert ref.place == 'aldebaran, universe'
-        assert ref.created == '1970-01-01'
-
-    def test_initialize_reference_full(self):
-        """Initialize with all parameters"""
-        fmf = self.fmf_object.initialize('test title', 'me',
-                                         'aldebaran, universe',
-                                         '1970-01-01',
-                                         'tux@example.com')
-        assert fmf is not None
-        assert isinstance(fmf, FMF)
-        assert len(fmf.meta_sections) == 1
-        ref = fmf.meta_sections[0]
-        assert ref.title == 'test title'
-        assert ref.creator == 'me'
-        assert ref.place == 'aldebaran, universe'
-        assert ref.created == '1970-01-01'
-        assert ref.contact == 'tux@example.com'
-
