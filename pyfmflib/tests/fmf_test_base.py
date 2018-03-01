@@ -35,7 +35,7 @@ from pyfmflib.pyfmflib.fmf import FMF
 # pylint: disable=too-few-public-methods
 class FmfTestBase(object):
     """Class containing the setup and the tests for methods of FMF object"""
-    def __int__(self):
+    def __initialize__(self):
         """Set up an empty FMF object"""
         # pylint: disable=attribute-defined-outside-init
         self.fmf_object = FMF()

@@ -39,7 +39,7 @@ class TestFmfMetaSection(FmfTestBase):
     """Class containing the tests for FMF meta section"""
     def setup(self):
         """Setup the empty fmf object"""
-        super(TestFmfMetaSection, self).__init__()
+        super(TestFmfMetaSection, self).__initialize__()
 
 #   Tests for add_meta_section
     def test_add_meta_section(self):

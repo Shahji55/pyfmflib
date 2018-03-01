@@ -39,7 +39,7 @@ class TestFmfTableSection(FmfTestBase):
     """Class containing the tests for FMF table section"""
     def setup(self):
         """Setup the empty fmf object"""
-        super(TestFmfTableSection, self).__init__()
+        super(TestFmfTableSection, self).__initialize__()
 
 #   Tests for add_table
     def test_add_table_by_name_symbol(self):

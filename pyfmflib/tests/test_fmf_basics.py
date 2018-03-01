@@ -40,7 +40,7 @@ class TestFmfBasics(FmfTestBase):
 
     def setup(self):
         """Setup the empty fmf object"""
-        super(TestFmfBasics, self).__init__()
+        super(TestFmfBasics, self).__initialize__()
 
 #   Tests for initialize
     def test_initialize_empty(self):

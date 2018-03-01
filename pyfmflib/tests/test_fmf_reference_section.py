@@ -36,7 +36,7 @@ class TestFmfReferenceSection(FmfTestBase):
     """Class containing the tests for FMF reference section"""
     def setup(self):
         """Setup the empty fmf object"""
-        super(TestFmfReferenceSection, self).__init__()
+        super(TestFmfReferenceSection, self).__initialize__()
 
 #   Tests for set_reference
     def test_set_reference(self):
