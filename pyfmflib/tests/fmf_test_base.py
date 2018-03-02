@@ -35,6 +35,8 @@ from pyfmflib.pyfmflib.fmf import FMF
 # pylint: disable=too-few-public-methods
 class FmfTestBase(object):
     """Class containing the setup and the tests for methods of FMF object"""
+    # Used __initialize__ instead of __init__ because pytest was throwing an
+    # attribute error in the subclasses which inherited from this class
     def __initialize__(self):
         """Set up an empty FMF object"""
         # pylint: disable=attribute-defined-outside-init
