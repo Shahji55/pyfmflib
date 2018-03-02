@@ -29,9 +29,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from pyfmflib.pyfmflib.fmf import FMF, MissingSubmission
-import pytest
 import os.path
+import pytest
+from pyfmflib.fmf import FMF, MissingSubmission
 
 # pylint: disable=bare-except
 try:

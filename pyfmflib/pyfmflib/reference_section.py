@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+"""This is the class containing the FMF reference section attributes"""
 # Copyright (c) 2014 - 2017, Rectorate of the University of Freiburg
 # All rights reserved.
 #
@@ -30,8 +30,10 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-class Reference_section(object):
-
+# pylint: disable=too-few-public-methods
+class ReferenceSection(object):
+    """Class containing the FMF reference section attributes"""
+    # pylint: disable=too-many-arguments
     def __init__(
             self,
             title,
@@ -40,23 +42,9 @@ class Reference_section(object):
             created,
             contact
     ):
-
+        """Specify the FMF reference section attributes"""
         self.title = title
         self.creator = creator
         self.place = place
         self.created = created
         self.contact = contact
-
-
-    def initialize(*args):
-
-        # args represents the regular arguments
-        # kwargs represents the keyword arguments
-        print args
-
-        print len(args)
-
-        if len(args) > 0 and len(args) < 4:
-            raise Exception('Number of arguments specified is invalid')
-
-        return Reference_section(title=None, creator=None, created=None, place=None, contact=None)

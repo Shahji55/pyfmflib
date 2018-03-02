@@ -30,8 +30,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-from pyfmflib.pyfmflib.meta_section import Meta_section
-from pyfmflib.pyfmflib.reference_section import Reference_section
+from pyfmflib.meta_section import FMFMetaSection
+from pyfmflib.reference_section import ReferenceSection
 
 
 class MissingSubmission(Exception):
@@ -82,34 +82,32 @@ class FMF(object):
         if len(args) == 1:
             return fmf
 
-        else:
-            # Order of arguments in API: title, creator, place,
-            # created and contact
-            title = args[1]
-            creator = args[2]
-            place = args[3]
-            created = args[4]
+        # Order of arguments in API: title, creator, place,
+        # created and contact
+        title = args[1]
+        creator = args[2]
+        place = args[3]
+        created = args[4]
 
-            if len(args) == 5:
-                contact = None
-                ref_section = fmf.set_reference(title, creator, place,
-                                                created, contact)
-                fmf.meta_sections.append(ref_section)
-                return fmf
+        if len(args) == 5:
+            contact = None
+            ref_section = fmf.set_reference(title, creator, place,
+                                            created, contact)
+            fmf.meta_sections.append(ref_section)
+            return fmf
 
-            else:
-                contact = args[5]
-                ref_section = fmf.set_reference(title, creator, place,
-                                                created, contact)
-                fmf.meta_sections.append(ref_section)
-                return fmf
+        contact = args[5]
+        ref_section = fmf.set_reference(title, creator, place,
+                                        created, contact)
+        fmf.meta_sections.append(ref_section)
+        return fmf
 
     # pylint: disable=too-many-arguments
     def set_reference(self, title, creator, place, created, contact):
         """Create/update reference section with given params"""
         if self.reference_section is None:
-            self.reference_section = Reference_section(title, creator, place,
-                                                       created, contact)
+            self.reference_section = ReferenceSection(title, creator, place,
+                                                      created, contact)
             self.meta_sections.append(self.reference_section)
 
         else:
@@ -124,8 +122,7 @@ class FMF(object):
 
     def add_meta_section(self, name):
         """Add meta section object to the FMF"""
-        if name:
-
+        if name is not None:
             if name.find("*") != -1:
                 raise ForbiddenSubmission(" '*' is not allowed as"
                                           " first character")
@@ -135,9 +132,10 @@ class FMF(object):
                     raise Exception('Meta section with this name '
                                     'already exists')
 
-            meta_section = Meta_section(name)
+            meta_section = FMFMetaSection(name)
             self.meta_sections.append(meta_section)
             return meta_section
+        raise Exception('Meta section name is mandatory')
 
     def get_meta_section(self, name):
         """Get the meta section object with given name"""
@@ -150,8 +148,30 @@ class FMF(object):
                     raise Exception('Meta section with specified name'
                                     ' does not exist')
 
+        raise Exception('No meta section exists')
+
     def set_header(self, encoding, comment_char, separator, misc_params):
         """Set the parameters of FMF header object"""
+        pass
+
+    def get_table(self, symbol):
+        """Get table which matches symbol"""
+        pass
+
+    def add_table(self, name, symbol):
+        """Add table with given params to FMF"""
+        pass
+
+    def add_comment(self, comment_string):
+        """Add comment with text in comment_string to FMF"""
+        pass
+
+    def read(self, filepointer):
+        """Read FMF from filepointer into FMF object"""
+        pass
+
+    def write(self, filepointer):
+        """Write to filepointer"""
         pass
 
     def verify(self):

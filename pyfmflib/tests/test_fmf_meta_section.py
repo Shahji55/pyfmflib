@@ -30,8 +30,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import pytest
-from pyfmflib.tests.fmf_test_base import FmfTestBase
-from pyfmflib.pyfmflib.fmf import FMF, UndefinedObject, MultipleKey, \
+from tests.fmf_test_base import FmfTestBase
+from pyfmflib.fmf import FMF, UndefinedObject, MultipleKey, \
     MissingSubmission, ForbiddenSubmission
 
 

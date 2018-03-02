@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+"""This is the class containing the FMFHeader attributes"""
 # Copyright (c) 2014 - 2017, Rectorate of the University of Freiburg
 # All rights reserved.
 #
@@ -30,26 +30,12 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-
+# pylint: disable=too-few-public-methods
 class Header(object):
-
-    def __init__(
-            self,
-    ):
-
-#        self.fmf_version = None
+    """Class containing the FMFHeader attributes"""
+    def __init__(self):
+        """Specify the header section attributes"""
         self.encoding = None
         self.comment_char = None
         self.separator = None
         self.misc_params = []
-
-
-    def create_header_section(*args):
-
-        print args
-        print len(args)
-
-        if len(args) < 4:
-            raise Exception('Mandatory keyword or parameter is missing')
-
-        return Header(fmf_version=None, encoding=None, separator=None, comment_char=None, misc_params=None)

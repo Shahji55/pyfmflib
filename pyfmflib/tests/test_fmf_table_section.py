@@ -29,9 +29,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import pytest
 from pyfmflib.pyfmflib.fmf import UndefinedObject, MultipleKey, \
     MissingSubmission, SpecificationViolation
-import pytest
 from pyfmflib.tests.fmf_test_base import FmfTestBase
 
 

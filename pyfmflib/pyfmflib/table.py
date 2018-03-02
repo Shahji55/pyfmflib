@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+"""This is the class containing the FMFTables attributes"""
 # Copyright (c) 2014 - 2017, Rectorate of the University of Freiburg
 # All rights reserved.
 #
@@ -30,9 +30,10 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+# pylint: disable=too-few-public-methods
 class FMFTable(object):
-
-    def  __init__(
+    """Class containing the FMFTables attributes"""
+    def __init__(
             self,
             name,
             symbol,
@@ -45,18 +46,3 @@ class FMFTable(object):
         self.no_rows = None
         self.data = None
         self.comments = None
-
-    def initialize(*args):
-
-        print (args)
-        print (len(args))
-
-#        if len(args) < 2:
-#            raise Exception('Number of arguments specified is invalid')
-
-        return FMFTable(name=None, symbol=None, data_definitions=[], no_columns=None, no_rows=None, data=[], comments=None)
-
-    def get_table(self, symbol):
-        if self.s != symbol:
-            raise Exception('Symbol does not exist')
-
