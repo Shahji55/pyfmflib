@@ -154,6 +154,10 @@ class FMF(object):
         """Set the parameters of FMF header object"""
         pass
 
+    def get_header(self):
+        """Get the FMF header object"""
+        pass
+
     def get_table(self, symbol):
         """Get table which matches symbol"""
         pass

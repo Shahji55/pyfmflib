@@ -30,6 +30,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import numpy
+import pytest
 from tests.fmf_test_base import FmfTestBase
 from pyfmflib.fmf import FMF
 
@@ -37,7 +38,6 @@ from pyfmflib.fmf import FMF
 class TestFmfBasics(FmfTestBase):
     """Class containing the tests for header, comment and verify methods
     of FMF"""
-
     def setup(self):
         """Setup the empty fmf object"""
         super(TestFmfBasics, self).__initialize__()
@@ -79,8 +79,9 @@ class TestFmfBasics(FmfTestBase):
         assert ref.created == '1970-01-01'
         assert ref.contact == 'tux@example.com'
 
-#   Tests for set_header using generator
-    def _check_set_header(self, mask):
+#   Tests for set_header using parametrization of arguments of test function
+    @pytest.mark.parametrize("mask", range(16))
+    def test_set_header(self, mask):
         """Set header parameter values according to mask"""
         encoding = None
         comment_char = None
@@ -99,6 +100,7 @@ class TestFmfBasics(FmfTestBase):
 
         header = self.fmf_object.set_header(
             encoding, comment_char, separator, misc_params)
+
         assert header is not None
         if mask & 0x01:
             assert header.encoding == encoding
@@ -119,45 +121,8 @@ class TestFmfBasics(FmfTestBase):
 #        else:
 #            assert header.misc_params is None
 
-    def test_header(self):
-        """Set header using generator"""
-        for mask in range(16):
-            yield self._check_set_header(mask)
 
-#   Tests for set header without using generator
-    def test_set_header(self):
-        """Set header with encoding, comment_char and separator"""
-        header = self.fmf_object.set_header('utf-9', ',', '\n', None)
-        assert header is not None
-        assert self.fmf_object.header is not None
-        assert header.encoding == 'utf-9'
-        assert header.comment_char == ','
-        assert header.separator == '\n'
-        assert header.misc_params is None
-
-    def test_set_header_full(self):
-        """Set header with encoding, comment_char,separator and
-        misc_params key value pairs"""
-        misc_params = {'fmf_version': 1.0, 'space_char': r'\s'}
-        header = self.fmf_object.set_header('utf-9', ',', '\n', misc_params)
-        assert header is not None
-        assert self.fmf_object.header is not None
-        assert header.encoding == 'utf-9'
-        assert header.comment_char == ','
-        assert header.separator == '\n'
-        assert header.misc_params['fmf_version'] == 1.0
-        assert header.misc_params['space_char'] == r'\s'
-
-    def test_set_header_default_args(self):
-        """Set header with default arguments"""
-        header = self.fmf_object.set_header(None, None, None, None)
-        assert header is not None
-        assert self.fmf_object.header is not None
-        assert header.encoding == 'utf-8'
-        assert header.comment_char == ';'
-        assert header.separator == '\t'
-        assert header.misc_params is None
-
+#   Test for get header
     def test_get_header(self):
         """Get the header object"""
         header = self.fmf_object.set_header('utf-9', ',', '\n', None)
