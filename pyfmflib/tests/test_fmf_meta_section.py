@@ -32,7 +32,7 @@
 from pytest import raises
 from tests.fmf_test_base import FmfTestBase
 from pyfmflib.fmf import FMF, UndefinedObject, MultipleKey, \
-    MissingSubmission, ForbiddenSubmission
+    MissingSubmission, ForbiddenSubmission, AmbiguousObject
 
 
 class TestFmfMetaSection(FmfTestBase):
@@ -69,6 +69,11 @@ class TestFmfMetaSection(FmfTestBase):
             # pylint: disable=no-value-for-parameter
             self.fmf_object.add_meta_section()
             # pylint: enable=no-value-for-parameter
+
+    def test_add_meta_sec_invalid_param(self):
+        """Add meta section with invalid parameter"""
+        with raises(AmbiguousObject):
+            self.fmf_object.add_meta_section(None)
 
 #   Tests for get_meta_section
     def test_get_meta_section_by_name(self):
