@@ -38,20 +38,3 @@ class FMFMetaSection(object):
         self.name = name
         self.entries = []
         self.comments = []
-
-    def add_entry(self, key, value):
-        """Create meta section entry with key and value"""
-        for item in self.entries:
-            if item.key == key:
-                raise Exception('Key already exists')
-
-        entry = FMFMetaSectionEntry(key, value)
-        self.entries.append(entry)
-
-
-class FMFMetaSectionEntry(object):
-    """Class containing the FMFMetaSectionEntry attributes"""
-    def __init__(self, key, value):
-
-        self.key = key
-        self.value = value
