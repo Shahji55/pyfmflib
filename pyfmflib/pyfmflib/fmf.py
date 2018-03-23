@@ -84,10 +84,13 @@ class FMF(object):
 
         # Order of arguments in API: title, creator, place,
         # created and contact
-        title = args[1]
-        creator = args[2]
-        place = args[3]
-        created = args[4]
+
+        title, creator, place, created = args[:4]
+
+#        title = args[1]
+#        creator = args[2]
+#        place = args[3]
+#        created = args[4]
 
         if len(args) == 5:
             contact = None

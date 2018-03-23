@@ -30,7 +30,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os.path
-import pytest
+from pytest import raises
 from pyfmflib.fmf import FMF, MissingSubmission
 
 # pylint: disable=bare-except
@@ -93,7 +93,7 @@ class TestFmfWriterReader(object):
         self.fmf_object.write(output)
         # Location of fmf file
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         # Read from file and write to stream
         stream = StringIO()
         stream.write(open(fmf_file).read())
@@ -103,22 +103,18 @@ class TestFmfWriterReader(object):
 
     def test_fmf_writer_no_argument(self):
         """Write method without filepointer"""
-        # pylint: disable=no-member
-        with pytest.raises(MissingSubmission):
-            # pylint: enable=no-member
+        with raises(MissingSubmission):
             self.fmf_object.write(None)
 
     def test_fmf_reader_no_argument(self):
         """Read method without filepointer"""
-        # pylint: disable=no-member
-        with pytest.raises(MissingSubmission):
-            # pylint: enable=no-member
+        with raises(MissingSubmission):
             self.fmf_object.read(None)
 
     def test_fmf_reader_metasec_entries(self):
         """Test meta section entries (key and values)"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -136,7 +132,7 @@ class TestFmfWriterReader(object):
     def test_fmf_reader_tablesec_entr(self):
         """Test number of table section entries"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -146,7 +142,7 @@ class TestFmfWriterReader(object):
     def test_fmf_reader_data_def_entr(self):
         """Test data definition entries (keys and values)"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -162,7 +158,7 @@ class TestFmfWriterReader(object):
     def test_fmf_reader_table_def_entr(self):
         """Test table definition entries (keys and values)"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -178,7 +174,7 @@ class TestFmfWriterReader(object):
     def test_fmf_reader_table_data(self):
         """Test content of table data"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -188,7 +184,7 @@ class TestFmfWriterReader(object):
     def test_fmf_reader_global_comments(self):
         """Test content of global comments"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -198,7 +194,7 @@ class TestFmfWriterReader(object):
     def test_fmf_reader_table_comments(self):
         """Test content of table comments"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)
@@ -208,7 +204,7 @@ class TestFmfWriterReader(object):
     def test_fmf_read_and_write(self):
         """Compare output of read and write"""
         abs_path = os.path.abspath(os.path.dirname(__file__))
-        fmf_file = abs_path + "/files/sample_fmf_file"
+        fmf_file = abs_path + '/files/sample_fmf_file.fmf'
         fmf_file_pointer = open(fmf_file, "r")
         fmf_object_return = FMF()
         fmf_object_return = self.fmf_object.read(fmf_file_pointer)

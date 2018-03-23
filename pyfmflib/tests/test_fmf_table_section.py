@@ -29,7 +29,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import pytest
+from pytest import raises
 from pyfmflib.fmf import UndefinedObject, MultipleKey, \
     MissingSubmission, SpecificationViolation
 from tests.fmf_test_base import FmfTestBase
@@ -59,9 +59,7 @@ class TestFmfTableSection(FmfTestBase):
         table = self.fmf_object.table_sections[0]
         assert table.name == 'Table Name'
         assert table.symbol == 'Table Symbol'
-        # pylint: disable=no-member
-        with pytest.raises(MultipleKey):
-            # pylint: enable=no-member
+        with raises(MultipleKey):
             self.fmf_object.add_table('Table Name', 'Table Symbol')
 
     def test_add_table_no_name_sym(self):
@@ -75,32 +73,24 @@ class TestFmfTableSection(FmfTestBase):
 
     def test_add_table_with_name_only(self):
         """Add a table with name and without symbol"""
-        # pylint: disable=no-member
-        with pytest.raises(MissingSubmission):
-            # pylint: enable=no-member
+        with raises(MissingSubmission):
             self.fmf_object.add_table('Table Name', None)
 
     def test_add_table_with_symbol_only(self):
         """Add a table without name and with symbol"""
-        # pylint: disable=no-member
-        with pytest.raises(MissingSubmission):
-            # pylint: enable=no-member
+        with raises(MissingSubmission):
             self.fmf_object.add_table(None, 'Table Symbol')
 
     def test_add_table_missing_param(self):
         """Test adding second table without name and symbol"""
         self.fmf_object.add_table('Table Name', 'Table Symbol')
-        # pylint: disable=no-member
-        with pytest.raises(MissingSubmission):
-            # pylint: enable=no-member
+        with raises(MissingSubmission):
             self.fmf_object.add_table(None, None)
 
     def test_add_table_spec_violate(self):
         """Adding second table without name and symbol should give exception"""
         self.fmf_object.add_table(None, None)
-        # pylint: disable=no-member
-        with pytest.raises(SpecificationViolation):
-            # pylint: enable=no-member
+        with raises(SpecificationViolation):
             self.fmf_object.add_table(None, None)
 
 #   Tests for get_table
@@ -132,9 +122,7 @@ class TestFmfTableSection(FmfTestBase):
         table_returned = self.fmf_object.get_table(None)
         assert table_returned is not None
         assert table_returned == table_added
-        # pylint: disable=no-member
-        with pytest.raises(UndefinedObject):
-            # pylint: enable=no-member
+        with raises(UndefinedObject):
             self.fmf_object.get_table(None)
 
     def test_get_table_iterate_no_sym(self):
@@ -146,9 +134,7 @@ class TestFmfTableSection(FmfTestBase):
         table_returned = self.fmf_object.get_table(None)
         assert table_returned is not None
         assert table_returned == table_added
-        # pylint: disable=no-member
-        with pytest.raises(UndefinedObject):
-            # pylint: enable=no-member
+        with raises(UndefinedObject):
             self.fmf_object.get_table(None)
 
     def test_get_table_no_further_iter(self):
@@ -166,9 +152,7 @@ class TestFmfTableSection(FmfTestBase):
         table_returned_2 = self.fmf_object.get_table(None)
         assert table_returned_2 is not None
         assert table_returned_2 == table_added_2
-        # pylint: disable=no-member
-        with pytest.raises(UndefinedObject):
-            # pylint: enable=no-member
+        with raises(UndefinedObject):
             self.fmf_object.get_table(None)
 
     def test_get_table_mixed_calls(self):
@@ -183,7 +167,5 @@ class TestFmfTableSection(FmfTestBase):
         table_returned = self.fmf_object.get_table(None)
         assert table_returned is not None
         assert table_returned == table_added
-        # pylint: disable=no-member
-        with pytest.raises(UndefinedObject):
-            # pylint: enable=no-member
+        with raises(UndefinedObject):
             self.fmf_object.get_table(None)

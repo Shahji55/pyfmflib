@@ -33,11 +33,7 @@
 # pylint: disable=too-few-public-methods
 class FMFTable(object):
     """Class containing the FMFTables attributes"""
-    def __init__(
-            self,
-            name,
-            symbol,
-    ):
+    def __init__(self, name, symbol):
 
         self.name = name
         self.symbol = symbol

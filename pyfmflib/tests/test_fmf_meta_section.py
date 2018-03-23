@@ -29,7 +29,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import pytest
+from pytest import raises
 from tests.fmf_test_base import FmfTestBase
 from pyfmflib.fmf import FMF, UndefinedObject, MultipleKey, \
     MissingSubmission, ForbiddenSubmission
@@ -53,25 +53,19 @@ class TestFmfMetaSection(FmfTestBase):
 
     def test_add_meta_sec_inval_name(self):
         """Add meta section by invalid name (* at start)"""
-        # pylint: disable=no-member
-        with pytest.raises(ForbiddenSubmission):
-            # pylint: enable=no-member
+        with raises(ForbiddenSubmission):
             self.fmf_object.add_meta_section('*Meta Section Name')
 
     def test_add_meta_sec_exist_name(self):
         """Add meta section with already existing name"""
         self.fmf_object.add_meta_section('Meta Section Name')
         assert len(self.fmf_object.meta_sections) != 2
-        # pylint: disable=no-member
-        with pytest.raises(MultipleKey):
-            # pylint: enable=no-member
+        with raises(MultipleKey):
             self.fmf_object.add_meta_section('Meta Section Name')
 
     def test_add_meta_sec_no_param(self):
         """Add meta section without name parameter"""
-        # pylint: disable=no-member
-        with pytest.raises(MissingSubmission):
-            # pylint: enable=no-member
+        with raises(MissingSubmission):
             # pylint: disable=no-value-for-parameter
             self.fmf_object.add_meta_section()
             # pylint: enable=no-value-for-parameter
@@ -115,9 +109,7 @@ class TestFmfMetaSection(FmfTestBase):
         assert meta_section2 is not None
         assert meta_section_returned2 is not None
         assert meta_section_returned2 == meta_section2
-        # pylint: disable=no-member
-        with pytest.raises(UndefinedObject):
-            # pylint: enable=no-member
+        with raises(UndefinedObject):
             self.fmf_object.get_meta_section(None)
 
     def test_get_meta_sec_mixed_calls(self):
@@ -129,7 +121,5 @@ class TestFmfMetaSection(FmfTestBase):
         meta_section_returned1 = self.fmf_object.get_meta_section(
             'Meta Section Name')
         assert meta_section_returned1 == meta_section1
-        # pylint: disable=no-member
-        with pytest.raises(UndefinedObject):
-            # pylint: enable=no-member
+        with raises(UndefinedObject):
             self.fmf_object.get_meta_section(None)

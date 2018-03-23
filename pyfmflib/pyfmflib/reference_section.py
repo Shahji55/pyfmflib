@@ -34,14 +34,7 @@
 class ReferenceSection(object):
     """Class containing the FMF reference section attributes"""
     # pylint: disable=too-many-arguments
-    def __init__(
-            self,
-            title,
-            creator,
-            place,
-            created,
-            contact
-    ):
+    def __init__(self, title, creator, place, created, contact):
         """Specify the FMF reference section attributes"""
         self.title = title
         self.creator = creator

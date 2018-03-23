@@ -29,8 +29,8 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import numpy
 import pytest
+from numpy import matrix
 from tests.fmf_test_base import FmfTestBase
 from pyfmflib.fmf import FMF
 
@@ -150,10 +150,8 @@ class TestFmfBasics(FmfTestBase):
         table_added.no_rows = 5
         table_added.no_columns = 2
         table_added.data_definitions = ['Num1', 'Num2']
-        # pylint: disable=no-member
-        table_added.data = numpy.matrix([[1, 2], [3, 4], [5, 6], [7, 8],
-                                         [9, 10]])
-        # pylint: enable=no-member
+        table_added.data = matrix([[1, 2], [3, 4], [5, 6], [7, 8],
+                                   [9, 10]])
         assert self.fmf_object.table_sections is not None
         assert len(self.fmf_object.table_sections) == 1
         verify_result = self.fmf_object.verify()
@@ -165,9 +163,7 @@ class TestFmfBasics(FmfTestBase):
         table_added.no_rows = 5
         table_added.no_columns = 2
         table_added.data_definitions = ['Num1', 'Num2']
-        # pylint: disable=no-member
-        table_added.data = numpy.matrix([[1, 2], [3, 4], [5, 6], [7, 8]])
-        # pylint: enable=no-member
+        table_added.data = matrix([[1, 2], [3, 4], [5, 6], [7, 8]])
         assert self.fmf_object.table_sections is not None
         assert len(self.fmf_object.table_sections) == 1
         verify_result = self.fmf_object.verify()
