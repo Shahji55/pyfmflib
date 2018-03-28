@@ -78,19 +78,15 @@ class FMF(object):
     def initialize(*args):
         """Initialize the FMF object"""
         fmf = FMF()
-
         if len(args) == 1:
             return fmf
 
         # Order of arguments in API: title, creator, place,
         # created and contact
-
+        # Pylint error message disabled because it is a false positive
+        # pylint: disable=unbalanced-tuple-unpacking
         title, creator, place, created = args[:4]
-
-#        title = args[1]
-#        creator = args[2]
-#        place = args[3]
-#        created = args[4]
+        # pylint: enable=unbalanced-tuple-unpacking
 
         if len(args) == 5:
             contact = None
@@ -98,13 +94,13 @@ class FMF(object):
                                             created, contact)
             fmf.meta_sections.append(ref_section)
             return fmf
-
         contact = args[5]
         ref_section = fmf.set_reference(title, creator, place,
                                         created, contact)
         fmf.meta_sections.append(ref_section)
         return fmf
 
+    # Pylint refactor message disabled because method requires these arguments
     # pylint: disable=too-many-arguments
     def set_reference(self, title, creator, place, created, contact):
         """Create/update reference section with given params"""
